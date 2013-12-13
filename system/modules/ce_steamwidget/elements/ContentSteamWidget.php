@@ -23,20 +23,23 @@ class ContentSteamWidget extends \ContentElement
     protected $strTemplate = 'ce_steamwidget';
 
     /**
-     * Extend the parent method
-     * @return string
-     */
-    public function generate()
-    {
-        return parent::generate();
-    }
-
-    /**
      * Generate the module
      */
     protected function compile()
     {
+        // build the widget url
+        if ( $this->steamAppText != '' )
+        {
+            $this->steamAppText = '?t='.rawurlencode($this->steamAppText);
+        }
 
+        $this->Template->steamAppUrl = sprintf('http://store.steampowered.com/widget/%u/%u/%s', $this->steamAppId, $this->steamAppSubId, $this->steamAppText);
+
+        // provide widget sizes
+        $arrSizes = deserialize($this->steamAppSize);
+
+        $this->Template->width  = $arrSizes[0];
+        $this->Template->height = $arrSizes[1];
     }
 
 }
